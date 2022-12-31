@@ -1,0 +1,101 @@
+﻿<Window x:Class="CompanyApp.ConsultantEditWorkerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CompanyApp"
+        xmlns:valid ="clr-namespace:CompanyApp.ViewModel"
+        mc:Ignorable="d"
+        Title="Редактирование сотрудника" Height="230" Width="350"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <valid:CompanyValidation x:Key="CompanyRule"/>
+
+        <Style TargetType="{x:Type Button}" x:Key="Save_validation">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=PhoneBox, 
+                                        Path=(Validation.HasError)}"
+                                        Value="True">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="{x:Type TextBox}" x:Key="TextBox_validation">
+            <Style.Setters>
+                <Setter Property="Text">
+                    <Setter.Value>
+                        <Binding Path="Phone" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <valid:CompanyValidation />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+    </Window.Resources>
+    <DockPanel LastChildFill="True">
+        <TextBlock DockPanel.Dock="Top" Margin="3"
+                   HorizontalAlignment="Center"
+                   FontWeight="Bold" FontSize="17"
+                   Text="Редактирование сотрудника"/>
+        <StackPanel DockPanel.Dock="Bottom" Margin="3,1,10,1"
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="3" IsDefault="True"
+                    Content="Сохранить"
+                    Click="SaveButton_Click"
+                    Style="{StaticResource Save_validation}"></Button>
+            <Button Margin="3,3,0,3" IsCancel="True"
+                    Content="Отмена"></Button>
+        </StackPanel>
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <Trigger Property="Grid.Column" Value="0">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Margin" Value="0,3"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="3,2,0,2"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Фамилия:" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Имя:" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Отчество:" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Телефон:" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Паспорт:" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Column=" 1" Grid.Row="0" Margin="3,1,10,1" 
+                     Text="{Binding Surname}" ></TextBlock>
+            <TextBlock Grid.Column=" 1" Grid.Row="1" Margin="3,1,10,1" 
+                     Text="{Binding Name}"></TextBlock>
+            <TextBlock Grid.Column=" 1" Grid.Row="2" Margin="3,1,10,1"
+                     Text="{Binding Lastname}"></TextBlock>
+            <TextBox Grid.Column=" 1" Grid.Row="3" Margin="3,1,10,1" x:Name="PhoneBox"
+                     Style="{StaticResource TextBox_validation}">
+                
+            </TextBox>
+            <TextBlock Grid.Column=" 1" Grid.Row="4" Margin="3,1,10,1"
+                     Text="***********"></TextBlock>
+
+        </Grid>
+    </DockPanel>
+</Window>
